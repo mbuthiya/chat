@@ -5,8 +5,11 @@ import(
 	"log"
 	"net/http"
 	"text/template"
+	"os"
 	"path/filepath"
 	"sync"
+	"github.com/mbuthiya/tracer"
+
 
 )
 
@@ -37,6 +40,7 @@ func main(){
 	flag.Parse()
 
 	r := newRoom() // Create a new room instance
+	r.tracer = trace.New(os.Stdout)
 
 
 	// We use the handle function that takes in a custom handler
