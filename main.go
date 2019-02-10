@@ -26,7 +26,7 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 	})
 
 	// Executing the template file and write the output to the response writer method 
-	t.templ.Execute(w,nil)
+	t.templ.Execute(w,r)
 }
 
 

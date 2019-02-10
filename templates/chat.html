@@ -53,7 +53,8 @@
 
         }else{
             // where we open the web socket
-            socket = new WebSocket("ws://localhost:8080/room")
+            // .Host takes the request passed in by the server and takes the Host header
+            socket = new WebSocket("ws://{{.Host}}/room")
 
             // Onclose event handler we alert the user the socket is closed
             socket.onclose = function(){
