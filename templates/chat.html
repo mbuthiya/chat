@@ -19,5 +19,55 @@
         <textarea cols="30" rows="10"></textarea>
         <input type="submit" value="Send">
     </form>
+
+    <!-- Javascript -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+
+    // The client logic
+    $(function(){
+        var socket = null;
+        var msgBox = $("#chatbox textarea");
+        var messages = $("#messages")
+
+        $("#chatbox").submit(function(){
+
+            if (!msgBox.val()) return false
+
+            if(!socket){
+                alert("Error: There is no Socket connection")
+                return false
+            }
+
+            // Socket.send is how we send messages to the server
+            socket.send(msgBox.val())
+            msgBox.val("")
+            return false
+        });
+
+
+        // Server logic
+
+        if(!window["WebSocket"]){
+            alert("Error: Your browser does not support web sockets")
+
+        }else{
+            // where we open the web socket
+            socket = new WebSocket("ws://localhost:8080/room")
+
+            // Onclose event handler we alert the user the socket is closed
+            socket.onclose = function(){
+                alert("Connection has been closed")
+            }
+
+
+            // When a new message is sent to the websocket we append it to the messages list
+            socket.onmessage = function(e){
+                messages.append($("<li>").text(e.data))
+            }
+        }
+
+    })
+</script>
 </body>
 </html>

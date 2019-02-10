@@ -1,6 +1,7 @@
 package main
 
 import(
+	"flag"
 	"log"
 	"net/http"
 	"text/template"
@@ -31,6 +32,10 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 
 func main(){
 
+	// Create Address flag 
+	var addr = flag.String("addr",":8080","The Address of the application")
+	flag.Parse()
+
 	r := newRoom() // Create a new room instance
 
 
@@ -43,7 +48,7 @@ func main(){
 	// Get the room going
 	go r.run()
 	
-	if err:= http.ListenAndServe(":8080",nil); err !=nil{
+	if err:= http.ListenAndServe(*addr,nil); err !=nil{
 		log.Fatal("ListenAndServe:",err)
 	}
 }
