@@ -66,24 +66,35 @@ const(
 	messageBufferSize = 256
 )
 
+
+// To use websockets we need to upgrade tge HTTP connection using the websocket.Upgrader type
 var upgrader = &websocket.Upgrader{ReadBufferSize:socketBufferSize,WriteBufferSize:socketBufferSize}
 
 func (r *room) ServeHTTP(w http.ResponseWriter,req *http.Request){
 
+	// We get a web socket by calling the upgrader.Upgrade method
 	socket, err :=upgrader.Upgrade(w,req,nil)
 	if err!=nil{
 		log.Fatal("ServeHTTP",err)
 		return
 	}
 
+	// Create the client object 
 	client := &client{
 		socket:socket,
 		send: make(chan []byte, messageBufferSize),
 		room: r,
 	}
+
+	// Pass the client to the room 
 	r.join <- client
 	
+	// When the client is finished we can remove the client from the room
 	defer func(){r.leave <- client}()
+	
+	//we create a go routine to write to the web socket in the background
 	go client.write()
+
+	// Call the read method to keep the connection open
 	client.read()
 }

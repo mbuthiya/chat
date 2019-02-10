@@ -30,10 +30,19 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 
 
 func main(){
+
+	r := newRoom() // Create a new room instance
+
+
 	// We use the handle function that takes in a custom handler
 	http.Handle("/", &templateHandler{filename:"chat.html"})
 	//template handler is a valid http.Handler because of the ServerHttp
 
+	http.Handle("/room",r)
+
+	// Get the room going
+	go r.run()
+	
 	if err:= http.ListenAndServe(":8080",nil); err !=nil{
 		log.Fatal("ListenAndServe:",err)
 	}
