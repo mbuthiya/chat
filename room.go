@@ -26,7 +26,7 @@ type room struct{
 	clients map[*client]bool
 
 	// Tracer will recieve trace information activity in the room
-	tracer trace.Tracer
+	tracer tracer.Tracer
 }
 
 

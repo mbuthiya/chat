@@ -10,6 +10,8 @@ import(
 	"sync"
 	"github.com/mbuthiya/tracer"
 
+	// TODO: change package name to tracer
+
 
 )
 
@@ -40,7 +42,7 @@ func main(){
 	flag.Parse()
 
 	r := newRoom() // Create a new room instance
-	r.tracer = trace.New(os.Stdout)
+	r.tracer = tracer.New(os.Stdout)
 
 
 	// We use the handle function that takes in a custom handler
