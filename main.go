@@ -48,6 +48,7 @@ func main(){
 	// Get the room going
 	go r.run()
 	
+	log.Println("Server is Running on",*addr)
 	if err:= http.ListenAndServe(*addr,nil); err !=nil{
 		log.Fatal("ListenAndServe:",err)
 	}
